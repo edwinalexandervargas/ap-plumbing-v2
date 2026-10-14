@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+/* AP Plumbing brand tokens — use as bg-brand, text-brand, bg-accent, etc. */
+@theme {
+  --color-brand: rgb(5 124 171);
+  --color-brand-dark: rgb(3 88 122);
+  --color-brand-light: #e8f4f8;
+  --color-accent: #f59e0b;
+  --font-sans: "Roboto", ui-sans-serif, system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
