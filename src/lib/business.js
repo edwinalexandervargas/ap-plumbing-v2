@@ -12,8 +12,8 @@ import {
 export const business = {
   name: "AP Plumbing",
   owner: "Angel Perez",
-  phoneDisplay: "(323) 329-7204",
-  phoneHref: "tel:3233297204",
+  phoneDisplay: "(323) 239-7204",
+  phoneHref: "tel:3232397204",
   email: "applumbingrooter@gmail.com",
   license: "1097944",
   serviceArea: "Los Angeles & San Gabriel Valley",
