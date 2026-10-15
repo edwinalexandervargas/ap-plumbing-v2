@@ -1,20 +1,31 @@
-import logo from './assets/logo.png'
-import { business, services } from './lib/business'
-import { useReviews } from './hooks/useReviews'
+import TopBanner from "./components/TopBanner";
+import Header from "./components/Header";
+import Hero from "./components/Hero";
+import About from "./components/About";
+import Services from "./components/Services";
+import Reviews from "./components/Reviews";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
+import { useReviews } from "./hooks/useReviews";
+import { useAuth } from "./hooks/useAuth";
 
-// Temporary setup check — replaced section by section with the Stitch design.
 export default function App() {
-  const { count, average, loading } = useReviews()
+  // Loaded once here so the header badge, hero rating and review list all share the same data
+  const reviewsApi = useReviews();
+  const auth = useAuth();
 
   return (
-    <main className="min-h-screen bg-brand-light flex flex-col items-center justify-center gap-4 p-6 text-center">
-      <img src={logo} alt={business.name} className="h-24" />
-      <h1 className="text-3xl font-bold text-brand">{business.tagline}</h1>
-      <p>{services.length} services loaded · Tailwind working</p>
-      <p>{loading ? 'Connecting to Firebase…' : `Firebase connected: ${count} reviews (avg ${average ?? '–'})`}</p>
-      <a href={business.phoneHref} className="rounded-lg bg-accent px-6 py-3 font-bold text-white">
-        Call {business.phoneDisplay}
-      </a>
-    </main>
-  )
+    <div className="min-h-screen bg-night font-sans text-slate-300 antialiased selection:bg-brand-500 selection:text-white">
+      <TopBanner />
+      <Header average={reviewsApi.average} />
+      <main>
+        <Hero average={reviewsApi.average} count={reviewsApi.count} />
+        <About />
+        <Services />
+        <Reviews reviewsApi={reviewsApi} isAdmin={auth.isAdmin} />
+        <Contact />
+      </main>
+      <Footer auth={auth} />
+    </div>
+  );
 }

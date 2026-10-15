@@ -10,9 +10,12 @@ export function useReviews() {
 
   useEffect(() => {
     (async () => {
-      const snap = await getDocs(query(collection(db, "reviews"), orderBy("date", "desc")));
-      setReviews(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-      setLoading(false);
+      try {
+        const snap = await getDocs(query(collection(db, "reviews"), orderBy("date", "desc")));
+        setReviews(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 
@@ -25,12 +28,16 @@ export function useReviews() {
     ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
     : null;
 
-  const addReview = async ({ name, rating, comment }) => {
-    if (!name || !comment || !rating) return false;
-    const review = { name, rating, comment, date: new Date().toISOString().split("T")[0] };
+  const addReview = async ({ name, city, rating, comment }) => {
+    const review = {
+      name: name.trim(),
+      rating,
+      comment: comment.trim(),
+      date: new Date().toISOString().split("T")[0],
+      ...(city?.trim() && { city: city.trim() }),
+    };
     const ref = await addDoc(collection(db, "reviews"), review);
-    setReviews((prev) => [{ id: ref.id, ...review }, ...prev]); // keeps id so it can be deleted right away
-    return true;
+    setReviews((prev) => [{ id: ref.id, ...review }, ...prev]); // keeps id so admin can delete it right away
   };
 
   const deleteReview = async (id) => {
