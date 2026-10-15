@@ -39,6 +39,44 @@ section[id] {
   -webkit-backdrop-filter: blur(16px);
 }
 
+.mobile-menu-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  border-top: 1px solid transparent;
+  opacity: 0;
+  transform: translateY(-0.5rem);
+  visibility: hidden;
+  transition:
+    grid-template-rows 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 180ms ease,
+    opacity 180ms ease,
+    transform 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 280ms;
+}
+.mobile-menu-panel.is-open {
+  grid-template-rows: 1fr;
+  border-top-color: rgb(255 255 255 / 0.1);
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  transition-delay: 0s;
+}
+.mobile-menu-content {
+  min-height: 0;
+  overflow: hidden;
+  padding: 0 1.25rem;
+  transition: padding 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.mobile-menu-panel.is-open .mobile-menu-content {
+  padding: 1rem 1.25rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu-panel {
+    transition: none;
+    transform: none;
+  }
+}
+
 .hero-mesh {
   background-color: #080f16;
   background-image:

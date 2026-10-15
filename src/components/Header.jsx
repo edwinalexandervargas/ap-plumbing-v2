@@ -90,8 +90,13 @@ export default function Header({ average }) {
         </div>
       </div>
 
-      {open && (
-        <div className="space-y-3 border-t border-white/10 bg-surface/95 px-5 py-4 backdrop-blur-xl xl:hidden">
+      <div
+        id="mobile-navigation"
+        aria-hidden={!open}
+        inert={!open}
+        className={`mobile-menu-panel bg-surface/95 backdrop-blur-xl xl:hidden ${open ? "is-open" : ""}`}
+      >
+        <div className="mobile-menu-content space-y-3">
           {navLinks.map((l) => (
             <a
               key={l.href}
@@ -123,7 +128,7 @@ export default function Header({ average }) {
             </a>
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }
