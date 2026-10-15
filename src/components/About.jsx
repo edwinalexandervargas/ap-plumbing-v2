@@ -11,7 +11,7 @@ const stats = [
 
 export default function About() {
   return (
-    <section id="about" className="border-b border-white/[0.08] bg-surface py-20">
+    <section id="about" className="border-b border-white/[0.08] bg-surface py-14 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
           <div className="order-2 lg:order-1 lg:col-span-5">
@@ -36,7 +36,7 @@ export default function About() {
               {aboutParagraphs.map((p) => <p key={p.slice(0, 20)}>{p}</p>)}
             </div>
 
-            <div className="grid grid-cols-3 gap-4 border-t border-white/10 pt-4 text-center">
+            <div className="grid grid-cols-1 gap-3 border-t border-white/10 pt-4 text-center sm:grid-cols-3 sm:gap-4">
               {stats.map((s) => (
                 <div key={s.label} className="rounded-2xl border border-white/[0.08] bg-card p-4">
                   <span className="block font-display text-xl font-extrabold text-brand-400 sm:text-3xl">{s.value}</span>

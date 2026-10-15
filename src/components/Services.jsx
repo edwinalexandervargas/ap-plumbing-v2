@@ -23,7 +23,7 @@ export default function Services() {
   const featured = services.find((s) => s.featured);
 
   return (
-    <section id="services" className="border-b border-white/[0.08] bg-night py-20">
+    <section id="services" className="border-b border-white/[0.08] bg-night py-14 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mb-14 max-w-3xl space-y-3 text-center">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-500/30 bg-brand-900/60 px-3 py-1 text-xs font-bold tracking-widest text-brand-400 uppercase">

@@ -48,7 +48,7 @@ export default function Reviews({ reviewsApi, isAdmin }) {
     }`;
 
   return (
-    <section id="reviews" className="border-b border-white/[0.08] bg-surface py-20">
+    <section id="reviews" className="border-b border-white/[0.08] bg-surface py-14 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mb-10 max-w-3xl space-y-3 text-center">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/25 bg-amber-500/10 px-3 py-1 text-xs font-bold tracking-widest text-amber-400 uppercase">
