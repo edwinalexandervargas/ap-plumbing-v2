@@ -81,7 +81,11 @@ export default function Footer({ auth }) {
       </div>
 
       {showLogin && (
-        <AdminModal onClose={() => setShowLogin(false)} login={auth.login} />
+        <AdminModal
+          onClose={() => setShowLogin(false)}
+          login={auth.login}
+          resetPassword={auth.resetPassword}
+        />
       )}
     </footer>
   );
