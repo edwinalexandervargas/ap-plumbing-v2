@@ -15,7 +15,7 @@ export const business = {
   phoneDisplay: "(323) 239-7204",
   phoneHref: "tel:3232397204",
   email: "applumbingrooter@gmail.com",
-  license: "1097944",
+  license: "1087944",
   serviceArea: "Los Angeles & San Gabriel Valley",
   serviceAreaShort: "LA & SGV",
   badges: ["Licensed & Insured", "24/7 Emergency", "Free Estimates"],

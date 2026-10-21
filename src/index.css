@@ -33,6 +33,14 @@ section[id] {
   scroll-margin-top: 5rem;
 } /* keeps headings clear of the sticky header */
 
+.review-scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.review-scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
 .glass-nav {
   background: rgb(13 20 27 / 0.88);
   backdrop-filter: blur(16px);
