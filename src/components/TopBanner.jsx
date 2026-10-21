@@ -14,12 +14,19 @@ export default function TopBanner() {
           <span className="rounded border border-accent-400/40 bg-accent-500/15 px-2 py-0.5 text-[11px] font-bold tracking-wider text-accent-400 uppercase sm:text-xs">
             24/7 Emergency
           </span>
-          <span className="hidden text-slate-200 sm:inline">Plumbing issue right now? Call the owner directly:</span>
+          <span className="hidden text-slate-200 sm:inline">
+            Plumbing issue right now? Call the owner directly:
+          </span>
         </div>
-        <a href={business.phoneHref} className="inline-flex shrink-0 items-center gap-1.5 font-bold tracking-tight transition-colors hover:text-accent-400">
+        <a
+          href={business.phoneHref}
+          className="inline-flex shrink-0 items-center gap-1.5 font-bold tracking-tight transition-colors hover:text-accent-400"
+        >
           <FontAwesomeIcon icon={faPhone} className="text-xs text-accent-400" />
           <span>{business.phoneDisplay}</span>
-          <span className="hidden text-[11px] font-normal text-slate-300 md:inline">· Lic #{business.license}</span>
+          <span className="hidden text-[11px] font-normal text-slate-300 md:inline">
+            · CA Lic. No. {business.license}
+          </span>
         </a>
       </div>
     </div>

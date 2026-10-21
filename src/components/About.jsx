@@ -20,7 +20,6 @@ export default function About() {
               <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-night/95 via-transparent to-transparent p-6 text-white">
                 <p className="text-xs font-bold tracking-wider text-accent-400 uppercase">Direct Accountability</p>
                 <h3 className="font-display text-2xl font-bold">When you call AP Plumbing, you get Angel.</h3>
-                <p className="mt-1 text-xs text-slate-400">Owner-operated. No surprise upselling.</p>
               </div>
             </div>
           </div>

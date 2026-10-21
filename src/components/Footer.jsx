@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import logo from "../assets/logo.png";
 import AdminModal from "./AdminModal";
-import { business, navLinks } from "../lib/business";
+import { business } from "../lib/business";
 
 export default function Footer({ auth }) {
   const [showLogin, setShowLogin] = useState(false);
@@ -42,7 +42,7 @@ export default function Footer({ auth }) {
               <div className="space-y-3 text-xs">
                 <div className="rounded-xl border border-white/[0.08] bg-[#111822] p-3 text-center lg:text-left">
                   <span className="block font-bold text-slate-200">
-                    CA Lic # {business.license}
+                    CA Lic. No. {business.license}
                   </span>
                   <span>Licensed &amp; Insured</span>
                 </div>
@@ -60,9 +60,6 @@ export default function Footer({ auth }) {
         <div className="flex flex-col items-center justify-between gap-3 border-t border-white/[0.08] pt-6 text-xs text-slate-500 sm:flex-row sm:gap-4 sm:pt-7 lg:pt-8">
           <p>© {new Date().getFullYear()} AP Plumbing. All Rights Reserved.</p>
           <div className="flex items-center gap-6">
-            <span className="text-slate-400">
-              Owner-Operated by {business.owner}
-            </span>
             {/* subtle admin link, same as the old site */}
             {auth.isAdmin ? (
               <button

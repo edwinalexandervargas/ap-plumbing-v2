@@ -184,9 +184,9 @@ export default function Contact() {
                 Business Info
               </h4>
               <div className="space-y-4 text-sm text-slate-300">
-                <InfoRow icon={faIdCard} label="California State License">
+                <InfoRow icon={faIdCard} label="CA Lic. No.">
                   <span className="text-base font-bold text-white">
-                    Lic # {business.license}
+                    {business.license}
                   </span>
                 </InfoRow>
                 <InfoRow icon={faEnvelope} label="Email">

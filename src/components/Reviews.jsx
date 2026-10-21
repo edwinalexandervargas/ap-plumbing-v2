@@ -64,6 +64,9 @@ export default function Reviews({ reviewsApi, googleApi, isAdmin }) {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [status, setStatus] = useState("idle");
+  const [reviewToDelete, setReviewToDelete] = useState(null);
+  const [deleteError, setDeleteError] = useState("");
+  const [deletingReview, setDeletingReview] = useState(false);
   const [visibleReviewCount, setVisibleReviewCount] =
     useState(REVIEWS_PER_BATCH);
   const [source, setSource] = useState("all"); // all | google | site
@@ -71,7 +74,9 @@ export default function Reviews({ reviewsApi, googleApi, isAdmin }) {
 
   // In-house (Firestore) reviews + Google reviews, tagged by source
   const siteItems = filtered.map((r) => ({ ...r, source: "site" }));
-  const googleItems = google.reviews.filter((r) => filter === 0 || r.rating === filter);
+  const googleItems = google.reviews.filter(
+    (r) => filter === 0 || r.rating === filter,
+  );
   const combined =
     source === "google"
       ? googleItems
@@ -101,6 +106,20 @@ export default function Reviews({ reviewsApi, googleApi, isAdmin }) {
       setStatus("success");
     } catch {
       setStatus("error");
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (!reviewToDelete || deletingReview) return;
+    setDeletingReview(true);
+    setDeleteError("");
+    try {
+      await deleteReview(reviewToDelete.id);
+      setReviewToDelete(null);
+    } catch {
+      setDeleteError("Could not delete this review. Please try again.");
+    } finally {
+      setDeletingReview(false);
     }
   };
 
@@ -143,22 +162,28 @@ export default function Reviews({ reviewsApi, googleApi, isAdmin }) {
                   <span className="font-display text-4xl leading-none font-extrabold text-white">
                     {google.rating?.toFixed(1)}
                   </span>
-                  <Stars rating={Math.round(google.rating)} className="mt-1 text-xs" />
+                  <Stars
+                    rating={Math.round(google.rating)}
+                    className="mt-1 text-xs"
+                  />
                   <span className="mt-1 text-[10px] font-medium text-slate-400">
                     {google.count} on Google
                   </span>
                 </a>
               )}
               {count > 0 && (
-              <div className="flex min-w-[90px] flex-col items-center rounded-2xl border border-white/10 bg-raised p-4">
-                <span className="font-display text-4xl leading-none font-extrabold text-white">
-                  {average}
-                </span>
-                <Stars rating={Math.round(average)} className="mt-1 text-xs" />
-                <span className="mt-1 text-[10px] font-medium text-slate-400">
-                  {count} on our site
-                </span>
-              </div>
+                <div className="flex min-w-[90px] flex-col items-center rounded-2xl border border-white/10 bg-raised p-4">
+                  <span className="font-display text-4xl leading-none font-extrabold text-white">
+                    {average}
+                  </span>
+                  <Stars
+                    rating={Math.round(average)}
+                    className="mt-1 text-xs"
+                  />
+                  <span className="mt-1 text-[10px] font-medium text-slate-400">
+                    {count} on our site
+                  </span>
+                </div>
               )}
               <div>
                 <h4 className="text-lg font-bold text-white">
@@ -166,32 +191,36 @@ export default function Reviews({ reviewsApi, googleApi, isAdmin }) {
                 </h4>
                 <p className="text-sm text-slate-400">
                   {count + (google.count ?? 0)} customer review
-                  {count + (google.count ?? 0) === 1 ? "" : "s"} on Google and our site.
+                  {count + (google.count ?? 0) === 1 ? "" : "s"} on Google and
+                  our site.
                 </p>
               </div>
             </div>
             <div className="flex flex-col gap-2 sm:items-end">
-            {google.enabled && (
+              {google.enabled && (
+                <a
+                  href={google.writeReviewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-brand-400/30 bg-brand-600 px-5 py-3 text-sm font-bold text-white shadow-md transition-all hover:bg-brand-500"
+                >
+                  Review us on Google{" "}
+                  <FontAwesomeIcon
+                    icon={faArrowUpRightFromSquare}
+                    className="text-xs"
+                  />
+                </a>
+              )}
               <a
-                href={google.writeReviewUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-brand-400/30 bg-brand-600 px-5 py-3 text-sm font-bold text-white shadow-md transition-all hover:bg-brand-500"
+                href="#review-form"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-raised px-5 py-3 text-sm font-bold text-slate-200 shadow-md transition-all hover:bg-slate-700/60"
               >
-                Review us on Google{" "}
-                <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="text-xs" />
+                <FontAwesomeIcon
+                  icon={faPenToSquare}
+                  className="text-accent-400"
+                />{" "}
+                Leave a Review Here
               </a>
-            )}
-            <a
-              href="#review-form"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-raised px-5 py-3 text-sm font-bold text-slate-200 shadow-md transition-all hover:bg-slate-700/60"
-            >
-              <FontAwesomeIcon
-                icon={faPenToSquare}
-                className="text-accent-400"
-              />{" "}
-              Leave a Review Here
-            </a>
             </div>
           </div>
         )}
@@ -203,7 +232,11 @@ export default function Reviews({ reviewsApi, googleApi, isAdmin }) {
               ["google", "Google"],
               ["site", "Our Website"],
             ].map(([value, label]) => (
-              <button key={value} onClick={() => pickSource(value)} className={chip(source === value)}>
+              <button
+                key={value}
+                onClick={() => pickSource(value)}
+                className={chip(source === value)}
+              >
                 {label}
               </button>
             ))}
@@ -254,7 +287,9 @@ export default function Reviews({ reviewsApi, googleApi, isAdmin }) {
                   <div className="mb-3 flex items-center justify-between">
                     <Stars rating={r.rating} className="text-sm" />
                     <span className="text-xs font-medium text-slate-500">
-                      {r.source === "google" ? r.relativeDate : formatDate(r.date)}
+                      {r.source === "google"
+                        ? r.relativeDate
+                        : formatDate(r.date)}
                     </span>
                   </div>
                   <p className="mb-4 text-sm leading-relaxed text-slate-300 italic">
@@ -294,13 +329,21 @@ export default function Reviews({ reviewsApi, googleApi, isAdmin }) {
                     )}
                   </div>
                   {r.source === "google" && (
-                    <a href={r.url} target="_blank" rel="noopener noreferrer" aria-label="View on Google">
+                    <a
+                      href={r.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="View on Google"
+                    >
                       <GoogleBadge />
                     </a>
                   )}
                   {isAdmin && r.source === "site" && (
                     <button
-                      onClick={() => deleteReview(r.id)}
+                      onClick={() => {
+                        setDeleteError("");
+                        setReviewToDelete(r);
+                      }}
                       aria-label={`Delete review by ${r.name}`}
                       className="rounded-lg border border-red-500/30 bg-red-500/10 px-2.5 py-1.5 text-xs font-bold text-red-300 hover:bg-red-500/20"
                     >
@@ -419,6 +462,65 @@ export default function Reviews({ reviewsApi, googleApi, isAdmin }) {
           </form>
         </div>
       </div>
+
+      {reviewToDelete && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget && !deletingReview) {
+              setReviewToDelete(null);
+            }
+          }}
+        >
+          <div
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="delete-review-title"
+            aria-describedby="delete-review-description"
+            className="w-full max-w-sm space-y-5 rounded-2xl border border-white/10 bg-card p-6 shadow-2xl"
+          >
+            <div>
+              <h3
+                id="delete-review-title"
+                className="font-display text-lg font-bold text-white"
+              >
+                Delete this review?
+              </h3>
+              <p
+                id="delete-review-description"
+                className="mt-2 text-sm leading-relaxed text-slate-300"
+              >
+                This will permanently remove the review by {reviewToDelete.name}
+                .
+              </p>
+            </div>
+            {deleteError && (
+              <p role="alert" className="text-sm font-medium text-red-400">
+                {deleteError}
+              </p>
+            )}
+            <div className="flex justify-end gap-3">
+              <button
+                type="button"
+                disabled={deletingReview}
+                onClick={() => setReviewToDelete(null)}
+                className="rounded-lg border border-white/10 px-4 py-2.5 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/5 disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={deletingReview}
+                onClick={confirmDelete}
+                className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-red-500 disabled:cursor-wait disabled:opacity-60"
+              >
+                <FontAwesomeIcon icon={faTrash} />
+                {deletingReview ? "Deleting…" : "Delete review"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

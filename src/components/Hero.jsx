@@ -1,5 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPhoneFlip, faArrowRight, faShieldHalved } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPhoneFlip,
+  faArrowRight,
+  faShieldHalved,
+} from "@fortawesome/free-solid-svg-icons";
 import angel from "../assets/angel.jpg";
 import Stars from "./Stars";
 import { business } from "../lib/business";
@@ -12,7 +16,10 @@ const checkTones = [
 
 export default function Hero({ average, count }) {
   return (
-    <section id="hero" className="hero-mesh relative overflow-hidden border-b border-white/[0.08] pt-10 pb-16 lg:pt-16 lg:pb-24">
+    <section
+      id="hero"
+      className="hero-mesh relative overflow-hidden border-b border-white/[0.08] pt-10 pb-16 lg:pt-16 lg:pb-24"
+    >
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
           {/* Left: headline + CTAs */}
@@ -21,7 +28,9 @@ export default function Hero({ average, count }) {
               <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
               <span>Serving {business.serviceArea}</span>
               <span className="text-slate-600">•</span>
-              <span className="font-bold text-brand-400">Lic # {business.license}</span>
+              <span className="font-bold text-brand-400">
+                CA Lic. No. {business.license}
+              </span>
             </div>
 
             <h1 className="font-display text-4xl leading-[1.12] font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
@@ -32,8 +41,10 @@ export default function Hero({ average, count }) {
             </h1>
 
             <p className="mx-auto max-w-2xl text-lg leading-relaxed text-slate-300 sm:text-xl lg:mx-0">
-              Honest, prompt work straight from owner-operator <strong className="font-bold text-white">{business.owner}</strong>.
-              From emergency leaks and drain clearing to water heaters and gas lines — done right at fair rates.
+              Honest, prompt work straight from owner-operator{" "}
+              <strong className="font-bold text-white">{business.owner}</strong>
+              . From emergency leaks and drain clearing to water heaters and gas
+              lines — done right at fair rates.
             </p>
 
             <div className="flex flex-col items-center justify-center gap-4 pt-2 sm:flex-row lg:justify-start">
@@ -41,7 +52,10 @@ export default function Hero({ average, count }) {
                 href={business.phoneHref}
                 className="inline-flex w-full items-center justify-center gap-3 rounded-2xl border border-brand-400/30 bg-brand-600 px-8 py-4 text-lg font-extrabold text-white shadow-xl shadow-brand-600/35 transition-all hover:-translate-y-0.5 hover:bg-brand-500 sm:w-auto"
               >
-                <FontAwesomeIcon icon={faPhoneFlip} className="text-accent-400" />
+                <FontAwesomeIcon
+                  icon={faPhoneFlip}
+                  className="text-accent-400"
+                />
                 Call Now: {business.phoneDisplay}
               </a>
               <a
@@ -54,8 +68,15 @@ export default function Hero({ average, count }) {
 
             <div className="grid grid-cols-1 gap-3 border-t border-white/10 pt-6 sm:grid-cols-3">
               {business.badges.map((b, i) => (
-                <div key={b} className="flex items-center justify-center gap-2.5 rounded-xl border border-white/[0.08] bg-card/90 p-2 text-sm lg:justify-start">
-                  <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs font-bold ${checkTones[i]}`}>✓</span>
+                <div
+                  key={b}
+                  className="flex items-center justify-center gap-2.5 rounded-xl border border-white/[0.08] bg-card/90 p-2 text-sm lg:justify-start"
+                >
+                  <span
+                    className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs font-bold ${checkTones[i]}`}
+                  >
+                    ✓
+                  </span>
                   <span className="font-semibold text-white">{b}</span>
                 </div>
               ))}
@@ -67,10 +88,15 @@ export default function Hero({ average, count }) {
             <div className="relative w-full max-w-md">
               <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-brand-600/30 via-sky-500/20 to-accent-500/25 opacity-75 blur-2xl" />
               <div className="relative aspect-square overflow-hidden rounded-3xl border-2 border-brand-400/30 bg-card shadow-2xl">
-                <img src={angel} alt={`${business.owner}, owner of AP Plumbing`} className="h-full w-full object-cover object-top transition-transform duration-500 hover:scale-105" />
+                <img
+                  src={angel}
+                  alt={`${business.owner}, owner of AP Plumbing`}
+                  className="h-full w-full object-cover object-top transition-transform duration-500 hover:scale-105"
+                />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-night/95 via-night/60 to-transparent p-5 text-white">
-                  <p className="font-display text-xl leading-tight font-bold">{business.owner}</p>
-                  <p className="text-xs font-medium text-brand-400">Owner &amp; Licensed Plumber</p>
+                  <p className="font-display text-xl leading-tight font-bold">
+                    {business.owner}
+                  </p>
                 </div>
               </div>
 
@@ -79,15 +105,21 @@ export default function Hero({ average, count }) {
                   <FontAwesomeIcon icon={faShieldHalved} />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold tracking-wider text-slate-400 uppercase">Licensed</p>
-                  <p className="text-sm font-extrabold text-white">&amp; Insured</p>
+                  <p className="text-xs font-semibold tracking-wider text-slate-400 uppercase">
+                    Licensed
+                  </p>
+                  <p className="text-sm font-extrabold text-white">
+                    &amp; Insured
+                  </p>
                 </div>
               </div>
 
               {count > 0 && (
                 <div className="absolute -top-4 -right-2 flex items-center gap-2 rounded-2xl border border-white/10 bg-card px-3.5 py-2 shadow-2xl sm:-right-4">
                   <Stars rating={Math.round(average)} className="text-xs" />
-                  <span className="text-xs font-bold text-slate-200">{average} Star Rated</span>
+                  <span className="text-xs font-bold text-slate-200">
+                    {average} Star Rated
+                  </span>
                 </div>
               )}
             </div>
