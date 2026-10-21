@@ -17,14 +17,41 @@ export function formatPhone(raw) {
 export function useContactForm() {
   const formRef = useRef(null);
   const [status, setStatus] = useState("idle"); // idle | loading | success | error
+  const [phoneError, setPhoneError] = useState("");
+  const [nameError, setNameError] = useState("");
 
-  const onPhoneChange = (e) => { e.target.value = formatPhone(e.target.value); };
+  const onNameChange = () => setNameError("");
+
+  const onPhoneChange = (e) => {
+    e.target.value = formatPhone(e.target.value);
+    setPhoneError("");
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    const nameInput = formRef.current?.elements.namedItem("user_name");
+    const trimmedName = nameInput?.value.trim() ?? "";
+    if (!trimmedName) {
+      setNameError("Enter your name.");
+      nameInput?.focus();
+      return;
+    }
+    nameInput.value = trimmedName;
+    setNameError("");
+
+    const phoneInput = formRef.current?.elements.namedItem("user_phone");
+    if (phoneInput?.value.replace(/\D/g, "").length !== 10) {
+      setPhoneError("Enter a 10-digit phone number.");
+      phoneInput?.focus();
+      return;
+    }
+
+    setPhoneError("");
     setStatus("loading");
     try {
-      await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, { publicKey: PUBLIC_KEY });
+      await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, {
+        publicKey: PUBLIC_KEY,
+      });
       setStatus("success");
       formRef.current.reset();
     } catch {
@@ -32,5 +59,13 @@ export function useContactForm() {
     }
   };
 
-  return { formRef, status, onSubmit, onPhoneChange };
+  return {
+    formRef,
+    status,
+    nameError,
+    phoneError,
+    onSubmit,
+    onNameChange,
+    onPhoneChange,
+  };
 }

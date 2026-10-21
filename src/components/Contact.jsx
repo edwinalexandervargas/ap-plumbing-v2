@@ -28,7 +28,15 @@ function InfoRow({ icon, label, children }) {
 }
 
 export default function Contact() {
-  const { formRef, status, onSubmit, onPhoneChange } = useContactForm();
+  const {
+    formRef,
+    status,
+    nameError,
+    phoneError,
+    onSubmit,
+    onNameChange,
+    onPhoneChange,
+  } = useContactForm();
 
   return (
     <section
@@ -71,8 +79,19 @@ export default function Contact() {
                       name="user_name"
                       required
                       placeholder="John Doe"
+                      aria-invalid={!!nameError}
+                      aria-describedby={nameError ? "name-error" : undefined}
+                      onChange={onNameChange}
                       className="field"
                     />
+                    {nameError && (
+                      <span
+                        id="name-error"
+                        className="mt-1.5 block text-xs font-medium text-red-400"
+                      >
+                        {nameError}
+                      </span>
+                    )}
                   </label>
                   <label>
                     <span className="field-label">Phone Number *</span>
@@ -81,9 +100,21 @@ export default function Contact() {
                       type="tel"
                       required
                       placeholder="(323) 000-0000"
+                      inputMode="tel"
+                      autoComplete="tel"
+                      aria-invalid={!!phoneError}
+                      aria-describedby={phoneError ? "phone-error" : undefined}
                       onChange={onPhoneChange}
                       className="field"
                     />
+                    {phoneError && (
+                      <span
+                        id="phone-error"
+                        className="mt-1.5 block text-xs font-medium text-red-400"
+                      >
+                        {phoneError}
+                      </span>
+                    )}
                   </label>
                 </div>
                 <label className="block">
