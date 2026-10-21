@@ -3,6 +3,7 @@ import { useState } from "react";
 export default function AdminModal({ onClose, login, resetPassword }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [resetMessage, setResetMessage] = useState("");
   const [resetting, setResetting] = useState(false);
@@ -62,14 +63,25 @@ export default function AdminModal({ onClose, login, resetPassword }) {
           onChange={(e) => setEmail(e.target.value)}
           className="field"
         />
-        <input
-          type="password"
-          required
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="field"
-        />
+        <div className="relative">
+          <input
+            type={showPassword ? "text" : "password"}
+            required
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="field pr-16"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((visible) => !visible)}
+            aria-label={showPassword ? "Hide password" : "Show password"}
+            aria-pressed={showPassword}
+            className="absolute inset-y-0 right-0 px-3 text-xs font-semibold text-brand-300 hover:text-white"
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
         {error && (
           <p className="text-center text-xs font-semibold text-red-400">
             {error}
