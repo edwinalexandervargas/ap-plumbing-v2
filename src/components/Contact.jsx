@@ -186,7 +186,7 @@ export default function Contact() {
           <div className="flex flex-col justify-between space-y-6 lg:col-span-5">
             <div className="relative overflow-hidden rounded-3xl border border-brand-400/30 bg-gradient-to-br from-[#0c4a6e] to-[#041a29] p-7 shadow-2xl sm:p-8">
               <div className="mb-4 flex items-center gap-4">
-                <div className="flex h-14 w-14 shrink-0 animate-pulse items-center justify-center rounded-2xl bg-accent-500 text-2xl text-white shadow-lg">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-accent-500 text-2xl text-white shadow-lg">
                   <FontAwesomeIcon icon={faPhone} />
                 </div>
                 <div>

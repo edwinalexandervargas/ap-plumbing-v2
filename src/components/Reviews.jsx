@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStar,
@@ -67,6 +67,10 @@ export default function Reviews({ reviewsApi, googleApi, isAdmin }) {
   const [reviewToDelete, setReviewToDelete] = useState(null);
   const [deleteError, setDeleteError] = useState("");
   const [deletingReview, setDeletingReview] = useState(false);
+  const deletingReviewRef = useRef(false);
+  const deleteTriggerRef = useRef(null);
+  const cancelDeleteRef = useRef(null);
+  const deleteDialogRef = useRef(null);
   const [visibleReviewCount, setVisibleReviewCount] =
     useState(REVIEWS_PER_BATCH);
   const [source, setSource] = useState("all"); // all | google | site
@@ -111,6 +115,7 @@ export default function Reviews({ reviewsApi, googleApi, isAdmin }) {
 
   const confirmDelete = async () => {
     if (!reviewToDelete || deletingReview) return;
+    deletingReviewRef.current = true;
     setDeletingReview(true);
     setDeleteError("");
     try {
@@ -119,9 +124,53 @@ export default function Reviews({ reviewsApi, googleApi, isAdmin }) {
     } catch {
       setDeleteError("Could not delete this review. Please try again.");
     } finally {
+      deletingReviewRef.current = false;
       setDeletingReview(false);
     }
   };
+
+  useEffect(() => {
+    if (!reviewToDelete) return;
+
+    const restoreFocus = deleteTriggerRef.current;
+    cancelDeleteRef.current?.focus();
+
+    const handleDialogKeyDown = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        if (!deletingReviewRef.current) setReviewToDelete(null);
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+      const focusable = deleteDialogRef.current?.querySelectorAll(
+        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+      const items = [...(focusable ?? [])].filter(
+        (item) => item.getClientRects().length > 0,
+      );
+      if (items.length === 0) {
+        event.preventDefault();
+        deleteDialogRef.current?.focus();
+      } else if (event.shiftKey && document.activeElement === items[0]) {
+        event.preventDefault();
+        items[items.length - 1].focus();
+      } else if (
+        !event.shiftKey &&
+        document.activeElement === items[items.length - 1]
+      ) {
+        event.preventDefault();
+        items[0].focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleDialogKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleDialogKeyDown);
+      if (restoreFocus?.isConnected) restoreFocus.focus();
+      else document.querySelector("#reviews h2")?.focus();
+    };
+  }, [reviewToDelete]);
 
   const chip = (active) =>
     `rounded-full border px-4 py-2 text-xs font-bold transition-all sm:text-sm ${
@@ -140,7 +189,10 @@ export default function Reviews({ reviewsApi, googleApi, isAdmin }) {
           <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/25 bg-amber-500/10 px-3 py-1 text-xs font-bold tracking-widest text-amber-400 uppercase">
             <FontAwesomeIcon icon={faStar} /> Customer Reviews
           </span>
-          <h2 className="font-display text-3xl font-extrabold text-white sm:text-4xl">
+          <h2
+            tabIndex={-1}
+            className="font-display text-3xl font-extrabold text-white sm:text-4xl"
+          >
             What Our Neighbors Say
           </h2>
           <p className="text-base text-slate-400 sm:text-lg">
@@ -342,6 +394,7 @@ export default function Reviews({ reviewsApi, googleApi, isAdmin }) {
                     <button
                       onClick={() => {
                         setDeleteError("");
+                        deleteTriggerRef.current = document.activeElement;
                         setReviewToDelete(r);
                       }}
                       aria-label={`Delete review by ${r.name}`}
@@ -477,6 +530,8 @@ export default function Reviews({ reviewsApi, googleApi, isAdmin }) {
             aria-modal="true"
             aria-labelledby="delete-review-title"
             aria-describedby="delete-review-description"
+            tabIndex={-1}
+            ref={deleteDialogRef}
             className="w-full max-w-sm space-y-5 rounded-2xl border border-white/10 bg-card p-6 shadow-2xl"
           >
             <div>
@@ -502,6 +557,7 @@ export default function Reviews({ reviewsApi, googleApi, isAdmin }) {
             <div className="flex justify-end gap-3">
               <button
                 type="button"
+                ref={cancelDeleteRef}
                 disabled={deletingReview}
                 onClick={() => setReviewToDelete(null)}
                 className="rounded-lg border border-white/10 px-4 py-2.5 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/5 disabled:opacity-50"
