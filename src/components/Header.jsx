@@ -27,9 +27,6 @@ export default function Header({ average }) {
               <span className="font-display text-xl leading-none font-extrabold tracking-tight text-brand-400 sm:text-2xl">
                 AP <span className="text-white">PLUMBING & ROOTER</span>
               </span>
-              <span className="mt-1 hidden text-[11px] font-semibold tracking-wider text-slate-400 uppercase sm:block">
-                Owner-Operated · {business.serviceAreaShort}
-              </span>
             </div>
           </a>
 
