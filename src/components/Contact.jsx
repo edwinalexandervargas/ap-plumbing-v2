@@ -62,13 +62,10 @@ export default function Contact() {
           {/* Quote form (EmailJS) */}
           <div className="flex flex-col justify-between rounded-3xl border border-white/10 bg-card p-5 text-slate-200 shadow-2xl sm:p-7 lg:col-span-7">
             <div>
-              <div className="mb-5 flex items-center justify-between gap-3">
+              <div className="mb-5 text-center">
                 <h3 className="font-display text-2xl font-bold text-white">
                   Request a Free Estimate
                 </h3>
-                <span className="shrink-0 rounded-lg border border-brand-500/30 bg-brand-900/60 px-2.5 py-1 text-xs font-bold text-brand-400">
-                  No Obligation
-                </span>
               </div>
               {/* Field names must match the EmailJS template: user_name, user_phone, user_email, service, message */}
               <form ref={formRef} onSubmit={onSubmit} className="space-y-3.5">
@@ -185,7 +182,7 @@ export default function Contact() {
           {/* Call card + business info */}
           <div className="flex flex-col justify-between space-y-6 lg:col-span-5">
             <div className="relative overflow-hidden rounded-3xl border border-brand-400/30 bg-gradient-to-br from-[#0c4a6e] to-[#041a29] p-7 shadow-2xl sm:p-8">
-              <div className="mb-4 flex items-center gap-4">
+              <div className="mb-4 flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-accent-500 text-2xl text-white shadow-lg">
                   <FontAwesomeIcon icon={faPhone} />
                 </div>
@@ -198,7 +195,7 @@ export default function Contact() {
                   </h4>
                 </div>
               </div>
-              <p className="mb-6 text-sm leading-relaxed text-slate-200">
+              <p className="mb-6 text-center text-sm leading-relaxed text-slate-200 sm:text-left">
                 Skip the form for active leaks, backed-up drains, or gas
                 concerns.
               </p>

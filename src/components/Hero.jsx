@@ -1,9 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPhoneFlip,
-  faArrowRight,
-  faShieldHalved,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPhoneFlip, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import angel from "../assets/angel.jpg";
 import Stars from "./Stars";
 import { business } from "../lib/business";
@@ -96,20 +92,6 @@ export default function Hero({ average, count }) {
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-night/95 via-night/60 to-transparent p-5 text-white">
                   <p className="font-display text-xl leading-tight font-bold">
                     {business.owner}
-                  </p>
-                </div>
-              </div>
-
-              <div className="absolute -right-2 -bottom-5 flex items-center gap-3 rounded-2xl border border-white/10 bg-card p-3.5 shadow-2xl sm:-right-6 sm:p-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-amber-500/40 bg-amber-500/20 text-xl text-amber-400">
-                  <FontAwesomeIcon icon={faShieldHalved} />
-                </div>
-                <div>
-                  <p className="text-xs font-semibold tracking-wider text-slate-400 uppercase">
-                    Licensed
-                  </p>
-                  <p className="text-sm font-extrabold text-white">
-                    &amp; Insured
                   </p>
                 </div>
               </div>

@@ -34,10 +34,10 @@ export default function About() {
           </div>
 
           <div className="order-1 space-y-6 lg:order-2 lg:col-span-7">
-            <div className="inline-flex items-center gap-2 rounded-lg border border-brand-500/30 bg-brand-900/60 px-3 py-1 text-sm font-bold tracking-wider text-brand-400 uppercase">
+            <div className="mx-auto flex w-fit items-center gap-2 rounded-lg border border-brand-500/30 bg-brand-900/60 px-3 py-1 text-sm font-bold tracking-wider text-brand-400 uppercase lg:mx-0">
               <FontAwesomeIcon icon={faUserShield} /> Meet the Owner
             </div>
-            <h2 className="font-display text-3xl leading-tight font-extrabold text-white sm:text-4xl">
+            <h2 className="text-center font-display text-3xl leading-tight font-extrabold text-white sm:text-4xl lg:text-left">
               "Plumbing since 18. Built on honest, reliable, and affordable
               service."
             </h2>
