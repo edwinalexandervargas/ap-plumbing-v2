@@ -87,7 +87,8 @@ export default function Contact() {
         setServiceOpen(true);
       } else {
         setActiveServiceIndex(
-          (index) => (index - 1 + serviceOptions.length) % serviceOptions.length,
+          (index) =>
+            (index - 1 + serviceOptions.length) % serviceOptions.length,
         );
       }
     } else if (event.key === "Home" && serviceOpen) {
@@ -200,7 +201,11 @@ export default function Contact() {
                     Service Needed
                   </span>
                   <div className="relative" ref={serviceSelectRef}>
-                    <input type="hidden" name="service" value={selectedService} />
+                    <input
+                      type="hidden"
+                      name="service"
+                      value={selectedService}
+                    />
                     <button
                       type="button"
                       role="combobox"
@@ -209,15 +214,22 @@ export default function Contact() {
                       aria-expanded={serviceOpen}
                       aria-controls="service-options"
                       aria-activedescendant={
-                        serviceOpen ? `service-option-${activeServiceIndex}` : undefined
+                        serviceOpen
+                          ? `service-option-${activeServiceIndex}`
+                          : undefined
                       }
                       onKeyDown={handleServiceKeyDown}
                       onClick={() => setServiceOpen((open) => !open)}
                       className="field flex cursor-pointer items-center justify-between text-left"
                     >
-                      <span className={selectedService ? "text-white" : "text-slate-400"}>
-                        {serviceOptions.find(({ value }) => value === selectedService)
-                          ?.label ?? "Select a service…"}
+                      <span
+                        className={
+                          selectedService ? "text-white" : "text-slate-400"
+                        }
+                      >
+                        {serviceOptions.find(
+                          ({ value }) => value === selectedService,
+                        )?.label ?? "Select a service…"}
                       </span>
                       <FontAwesomeIcon
                         icon={faChevronDown}
