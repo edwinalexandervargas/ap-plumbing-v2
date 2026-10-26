@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { faInstagram, faYelp } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import logo from "../assets/logo.png";
@@ -31,6 +32,26 @@ export default function Footer({ auth }) {
                 <FontAwesomeIcon icon={faPhone} className="text-accent-500" />{" "}
                 {business.phoneDisplay}
               </a>
+              <div className="flex items-center justify-center gap-5 lg:justify-start">
+                <a
+                  href={business.instagramUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Visit AP Plumbing on Instagram"
+                  className="inline-flex size-7 items-center justify-center rounded-[8px] bg-[linear-gradient(45deg,#feda75_0%,#fa7e1e_25%,#d62976_55%,#962fbf_78%,#4f5bd5_100%)] text-base text-white transition-transform hover:scale-105"
+                >
+                  <FontAwesomeIcon icon={faInstagram} aria-hidden="true" />
+                </a>
+                <a
+                  href={business.yelpUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Visit AP Plumbing on Yelp"
+                  className="text-2xl text-[#D32323] transition-colors hover:text-[#B71C1C]"
+                >
+                  <FontAwesomeIcon icon={faYelp} aria-hidden="true" />
+                </a>
+              </div>
             </div>
           </div>
 

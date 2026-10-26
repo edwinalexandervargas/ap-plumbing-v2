@@ -1,8 +1,10 @@
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeadset,
   faPaperPlane,
   faPhone,
+  faChevronDown,
   faIdCard,
   faEnvelope,
   faLocationDot,
@@ -10,6 +12,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { business, services } from "../lib/business";
 import { useContactForm } from "../hooks/useContactForm";
+
+const serviceOptions = [
+  ...services.map(({ title }) => ({ label: title, value: title })),
+  { label: "Other / Not sure", value: "Other" },
+];
 
 function InfoRow({ icon, label, children }) {
   return (
@@ -28,6 +35,10 @@ function InfoRow({ icon, label, children }) {
 }
 
 export default function Contact() {
+  const [serviceOpen, setServiceOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState("");
+  const [activeServiceIndex, setActiveServiceIndex] = useState(0);
+  const serviceSelectRef = useRef(null);
   const {
     formRef,
     status,
@@ -37,6 +48,67 @@ export default function Contact() {
     onNameChange,
     onPhoneChange,
   } = useContactForm();
+
+  useEffect(() => {
+    if (!serviceOpen) return undefined;
+
+    function closeOnOutsidePointer(event) {
+      if (!serviceSelectRef.current?.contains(event.target)) {
+        setServiceOpen(false);
+      }
+    }
+
+    document.addEventListener("pointerdown", closeOnOutsidePointer);
+    return () =>
+      document.removeEventListener("pointerdown", closeOnOutsidePointer);
+  }, [serviceOpen]);
+
+  function handleServiceKeyDown(event) {
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      if (!serviceOpen) {
+        const selectedIndex = serviceOptions.findIndex(
+          ({ value }) => value === selectedService,
+        );
+        setActiveServiceIndex(selectedIndex >= 0 ? selectedIndex : 0);
+        setServiceOpen(true);
+      } else {
+        setActiveServiceIndex((index) => (index + 1) % serviceOptions.length);
+      }
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      if (!serviceOpen) {
+        const selectedIndex = serviceOptions.findIndex(
+          ({ value }) => value === selectedService,
+        );
+        setActiveServiceIndex(
+          selectedIndex >= 0 ? selectedIndex : serviceOptions.length - 1,
+        );
+        setServiceOpen(true);
+      } else {
+        setActiveServiceIndex(
+          (index) => (index - 1 + serviceOptions.length) % serviceOptions.length,
+        );
+      }
+    } else if (event.key === "Home" && serviceOpen) {
+      event.preventDefault();
+      setActiveServiceIndex(0);
+    } else if (event.key === "End" && serviceOpen) {
+      event.preventDefault();
+      setActiveServiceIndex(serviceOptions.length - 1);
+    } else if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      if (serviceOpen) {
+        setSelectedService(serviceOptions[activeServiceIndex].value);
+        setServiceOpen(false);
+      } else {
+        setServiceOpen(true);
+      }
+    } else if (event.key === "Escape" && serviceOpen) {
+      event.preventDefault();
+      setServiceOpen(false);
+    }
+  }
 
   return (
     <section
@@ -123,20 +195,72 @@ export default function Contact() {
                     className="field"
                   />
                 </label>
-                <label className="block">
-                  <span className="field-label">Service Needed</span>
-                  <select name="service" className="field" defaultValue="">
-                    <option value="" disabled>
-                      Select a service…
-                    </option>
-                    {services.map((s) => (
-                      <option key={s.title} value={s.title}>
-                        {s.title}
-                      </option>
-                    ))}
-                    <option value="Other">Other / Not sure</option>
-                  </select>
-                </label>
+                <div className="block">
+                  <span id="service-label" className="field-label">
+                    Service Needed
+                  </span>
+                  <div className="relative" ref={serviceSelectRef}>
+                    <input type="hidden" name="service" value={selectedService} />
+                    <button
+                      type="button"
+                      role="combobox"
+                      aria-labelledby="service-label"
+                      aria-haspopup="listbox"
+                      aria-expanded={serviceOpen}
+                      aria-controls="service-options"
+                      aria-activedescendant={
+                        serviceOpen ? `service-option-${activeServiceIndex}` : undefined
+                      }
+                      onKeyDown={handleServiceKeyDown}
+                      onClick={() => setServiceOpen((open) => !open)}
+                      className="field flex cursor-pointer items-center justify-between text-left"
+                    >
+                      <span className={selectedService ? "text-white" : "text-slate-400"}>
+                        {serviceOptions.find(({ value }) => value === selectedService)
+                          ?.label ?? "Select a service…"}
+                      </span>
+                      <FontAwesomeIcon
+                        icon={faChevronDown}
+                        className={`ml-3 text-xs text-slate-400 transition-transform duration-200 ${serviceOpen ? "rotate-180" : ""}`}
+                        aria-hidden="true"
+                      />
+                    </button>
+                    <div
+                      className={`service-select-panel ${serviceOpen ? "is-open" : ""}`}
+                    >
+                      <div className="service-select-content">
+                        <div
+                          id="service-options"
+                          role="listbox"
+                          aria-label="Service Needed"
+                          className="service-select-options"
+                        >
+                          {serviceOptions.map(({ label, value }, index) => (
+                            <div
+                              key={value}
+                              id={`service-option-${index}`}
+                              role="option"
+                              aria-selected={selectedService === value}
+                              onMouseEnter={() => setActiveServiceIndex(index)}
+                              onClick={() => {
+                                setSelectedService(value);
+                                setActiveServiceIndex(index);
+                                setServiceOpen(false);
+                              }}
+                              className={`cursor-pointer px-4 py-2.5 text-sm transition-colors ${
+                                activeServiceIndex === index
+                                  ? "bg-brand-500/20 text-white"
+                                  : "text-slate-300 hover:bg-white/5 hover:text-white"
+                              }`}
+                            >
+                              {label}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <label className="block">
                   <span className="field-label">How Can Angel Help? *</span>
                   <textarea

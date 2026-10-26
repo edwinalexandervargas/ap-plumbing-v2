@@ -14,6 +14,8 @@ export const business = {
   owner: "Angel Perez",
   phoneDisplay: "(323) 239-7204",
   phoneHref: "tel:3232397204",
+  instagramUrl: "https://www.instagram.com/applumbingrooter",
+  yelpUrl: "https://www.yelp.com/biz/ap-plumbing-and-rooter-maywood",
   email: "applumbingrooter@gmail.com",
   license: "1087944",
   serviceArea: "Los Angeles & San Gabriel Valley",
